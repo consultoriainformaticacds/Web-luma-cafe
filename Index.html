@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Luma — Café & Cocina</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream: #F5F0E8;
+      --warm-white: #FAFAF7;
+      --charcoal: #1C1C1A;
+      --soft-black: #2A2A26;
+      --accent: #B8864E;
+      --accent-light: #D4A97A;
+      --muted: #8A8A7A;
+      --border: #E2DDD4;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--warm-white);
+      color: var(--charcoal);
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.4rem 4rem;
+      background: rgba(250,250,247,0.88);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      animation: fadeDown 0.8s ease both;
+    }
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.7rem; font-weight: 600; letter-spacing: 0.08em;
+      color: var(--charcoal); text-decoration: none;
+    }
+    .nav-logo span { color: var(--accent); }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a {
+      font-size: 0.78rem; font-weight: 500; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--muted); text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--charcoal); }
+    .nav-cta {
+      font-size: 0.78rem; font-weight: 500; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--warm-white);
+      background: var(--charcoal); border: none; cursor: pointer;
+      padding: 0.65rem 1.6rem; transition: background 0.2s;
+      text-decoration: none;
+    }
+    .nav-cta:hover { background: var(--accent); }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: grid; grid-template-columns: 1fr 1fr;
+      padding-top: 80px;
+    }
+    .hero-left {
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 6rem 4rem 6rem 6rem;
+      animation: fadeUp 1s 0.2s ease both;
+    }
+    .hero-tag {
+      font-size: 0.72rem; font-weight: 500; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--accent); margin-bottom: 1.5rem;
+    }
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3.2rem, 5vw, 5.5rem);
+      font-weight: 300; line-height: 1.05;
+      color: var(--charcoal); margin-bottom: 1.8rem;
+    }
+    .hero-title em { font-style: italic; color: var(--accent); }
+    .hero-desc {
+      font-size: 0.95rem; font-weight: 300; line-height: 1.8;
+      color: var(--muted); max-width: 380px; margin-bottom: 3rem;
+    }
+    .hero-actions { display: flex; gap: 1.2rem; align-items: center; }
+    .btn-primary {
+      font-size: 0.78rem; font-weight: 500; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--warm-white);
+      background: var(--charcoal); border: none; cursor: pointer;
+      padding: 1rem 2.4rem; transition: background 0.2s; text-decoration: none;
+      display: inline-block;
+    }
+    .btn-primary:hover { background: var(--accent); }
+    .btn-ghost {
+      font-size: 0.78rem; font-weight: 500; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--charcoal);
+      border-bottom: 1px solid var(--charcoal); padding-bottom: 2px;
+      text-decoration: none; transition: color 0.2s, border-color 0.2s;
+    }
+    .btn-ghost:hover { color: var(--accent); border-color: var(--accent); }
+
+    .hero-stats {
+      display: flex; gap: 3rem; margin-top: 4rem;
+      padding-top: 2.5rem; border-top: 1px solid var(--border);
+    }
+    .stat-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.2rem; font-weight: 300; color: var(--charcoal);
+    }
+    .stat-label {
+      font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--muted); margin-top: 0.2rem;
+    }
+
+    .hero-right {
+      position: relative; overflow: hidden;
+      animation: fadeIn 1.2s 0.4s ease both;
+    }
+    .hero-image-wrap {
+      width: 100%; height: 100%;
+      background: var(--cream);
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden; position: relative;
+    }
+    .hero-image-wrap::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, #E8DEC8 0%, #C9B99A 40%, #A08060 100%);
+    }
+    .hero-img-placeholder {
+      position: relative; z-index: 1;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 8rem; opacity: 0.25; color: var(--charcoal);
+    }
+    .hero-badge {
+      position: absolute; bottom: 3rem; left: 3rem; z-index: 2;
+      background: var(--warm-white); padding: 1.2rem 1.6rem;
+      border-left: 3px solid var(--accent);
+    }
+    .hero-badge p {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem; font-style: italic; color: var(--charcoal);
+    }
+    .hero-badge span {
+      font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--muted); margin-top: 0.3rem; display: block;
+    }
+
+    /* ── SECTION COMMONS ── */
+    section { padding: 6rem 6rem; }
+    .section-label {
+      font-size: 0.72rem; font-weight: 500; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--accent); margin-bottom: 1rem;
+    }
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 3.5vw, 3.2rem); font-weight: 300; line-height: 1.15;
+    }
+
+    /* ── MENU ── */
+    #menu { background: var(--cream); }
+    .menu-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 4rem; }
+    .menu-tabs { display: flex; gap: 0; margin-top: 2rem; }
+    .tab {
+      font-size: 0.78rem; font-weight: 500; letter-spacing: 0.1em;
+      text-transform: uppercase; padding: 0.7rem 1.8rem;
+      border: 1px solid var(--border); background: transparent;
+      cursor: pointer; transition: all 0.2s; color: var(--muted);
+      margin-right: -1px;
+    }
+    .tab.active, .tab:hover { background: var(--charcoal); color: var(--warm-white); border-color: var(--charcoal); z-index: 1; position: relative; }
+
+    .menu-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5px; background: var(--border); }
+    .menu-item { background: var(--warm-white); padding: 2.2rem; transition: background 0.2s; }
+    .menu-item:hover { background: var(--charcoal); color: var(--warm-white); }
+    .menu-item:hover .item-price { color: var(--accent-light); }
+    .menu-item:hover .item-desc { color: #aaa; }
+    .item-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.7rem; }
+    .item-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.25rem; font-weight: 400;
+    }
+    .item-price { font-size: 0.95rem; font-weight: 500; color: var(--accent); white-space: nowrap; margin-left: 1rem; }
+    .item-desc { font-size: 0.82rem; color: var(--muted); line-height: 1.6; font-weight: 300; }
+
+    /* ── ABOUT ── */
+    #nosotros {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center;
+      padding: 7rem 6rem;
+    }
+    .about-image {
+      height: 520px;
+      background: linear-gradient(160deg, #D4C4A8 0%, #A89070 100%);
+      position: relative; overflow: hidden;
+    }
+    .about-image::after {
+      content: '☕';
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+      font-size: 7rem; opacity: 0.15;
+    }
+    .about-tag-box {
+      position: absolute; top: 2.5rem; right: -1.5rem;
+      background: var(--charcoal); color: var(--warm-white);
+      padding: 1rem 1.4rem; font-size: 0.72rem;
+      letter-spacing: 0.12em; text-transform: uppercase;
+    }
+    .about-text .section-title { margin-bottom: 1.5rem; }
+    .about-text p {
+      font-size: 0.92rem; line-height: 1.85; color: var(--muted);
+      font-weight: 300; margin-bottom: 1.2rem;
+    }
+    .about-list { list-style: none; margin-top: 2rem; }
+    .about-list li {
+      font-size: 0.82rem; letter-spacing: 0.05em; color: var(--charcoal);
+      padding: 0.8rem 0; border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 1rem;
+    }
+    .about-list li::before { content: '—'; color: var(--accent); }
+
+    /* ── HORARIOS ── */
+    #horarios { background: var(--charcoal); color: var(--warm-white); padding: 5rem 6rem; }
+    #horarios .section-label { color: var(--accent-light); }
+    #horarios .section-title { color: var(--warm-white); margin-bottom: 3rem; }
+    .horarios-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; margin-top: 3rem; }
+    .horario-card {
+      border: 1px solid rgba(255,255,255,0.1);
+      padding: 2rem 1.8rem;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .horario-card:hover { border-color: var(--accent); background: rgba(184,134,78,0.08); }
+    .horario-dia {
+      font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--accent-light); margin-bottom: 0.8rem;
+    }
+    .horario-hora {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem; font-weight: 300; margin-bottom: 0.5rem;
+    }
+    .horario-nota { font-size: 0.78rem; color: rgba(255,255,255,0.4); font-weight: 300; }
+
+    /* ── CONTACTO ── */
+    #contacto { padding: 7rem 6rem; }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: start; margin-top: 3rem; }
+    .contact-info p {
+      font-size: 0.92rem; line-height: 1.85; color: var(--muted);
+      font-weight: 300; margin-bottom: 2rem;
+    }
+    .contact-detail {
+      display: flex; flex-direction: column; gap: 1.2rem; margin-top: 2rem;
+    }
+    .contact-row {
+      display: flex; align-items: flex-start; gap: 1.2rem;
+      padding-bottom: 1.2rem; border-bottom: 1px solid var(--border);
+    }
+    .contact-row-label {
+      font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--accent); min-width: 80px; margin-top: 0.1rem;
+    }
+    .contact-row-val { font-size: 0.9rem; color: var(--charcoal); font-weight: 300; line-height: 1.6; }
+
+    .contact-form { display: flex; flex-direction: column; gap: 1.2rem; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+    .form-field { display: flex; flex-direction: column; gap: 0.5rem; }
+    .form-field label {
+      font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted);
+    }
+    .form-field input, .form-field textarea, .form-field select {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.88rem; font-weight: 300;
+      background: var(--cream); border: 1px solid var(--border);
+      padding: 0.85rem 1rem; color: var(--charcoal);
+      outline: none; transition: border-color 0.2s; resize: none;
+      appearance: none;
+    }
+    .form-field input:focus, .form-field textarea:focus, .form-field select:focus {
+      border-color: var(--charcoal);
+    }
+    .form-field textarea { min-height: 110px; }
+    .form-submit {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.78rem; font-weight: 500; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--warm-white);
+      background: var(--charcoal); border: none; cursor: pointer;
+      padding: 1rem 2rem; transition: background 0.2s; align-self: flex-start;
+      margin-top: 0.5rem;
+    }
+    .form-submit:hover { background: var(--accent); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--soft-black); color: rgba(255,255,255,0.5);
+      padding: 2.5rem 6rem;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .footer-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem; font-weight: 400; color: var(--warm-white);
+    }
+    .footer-logo span { color: var(--accent); }
+    footer p { font-size: 0.78rem; }
+    .footer-links { display: flex; gap: 2rem; }
+    .footer-links a { font-size: 0.75rem; color: rgba(255,255,255,0.4); text-decoration: none; letter-spacing: 0.08em; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--accent-light); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeUp   { from { opacity: 0; transform: translateY(30px);  } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeIn   { from { opacity: 0; } to { opacity: 1; } }
+
+    .reveal {
+      opacity: 0; transform: translateY(24px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      nav { padding: 1.2rem 2rem; }
+      .nav-links, .nav-cta { display: none; }
+      #hero { grid-template-columns: 1fr; }
+      .hero-left { padding: 3rem 2rem; }
+      .hero-right { height: 320px; }
+      section { padding: 4rem 2rem; }
+      #nosotros { grid-template-columns: 1fr; padding: 4rem 2rem; gap: 3rem; }
+      .about-image { height: 280px; }
+      .horarios-grid { grid-template-columns: 1fr 1fr; }
+      .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
+      #horarios, #contacto, footer { padding-left: 2rem; padding-right: 2rem; }
+      .menu-grid { grid-template-columns: 1fr; }
+      footer { flex-direction: column; gap: 1.2rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a class="nav-logo" href="#">Lu<span>ma</span></a>
+    <ul class="nav-links">
+      <li><a href="#menu">Menú</a></li>
+      <li><a href="#nosotros">Nosotros</a></li>
+      <li><a href="#horarios">Horarios</a></li>
+      <li><a href="#contacto">Contacto</a></li>
+    </ul>
+    <a href="#contacto" class="nav-cta">Reservar</a>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-left">
+      <p class="hero-tag">Café &amp; Cocina de Autor</p>
+      <h1 class="hero-title">
+        Sabores que<br/><em>inspiran</em><br/>momentos
+      </h1>
+      <p class="hero-desc">
+        En Luma creemos que cada plato es una historia. Ingredientes de estación, técnica cuidadosa y un espacio donde el tiempo se detiene.
+      </p>
+      <div class="hero-actions">
+        <a href="#menu" class="btn-primary">Ver menú</a>
+        <a href="#contacto" class="btn-ghost">Hacer reserva</a>
+      </div>
+      <div class="hero-stats">
+        <div>
+          <div class="stat-num">8+</div>
+          <div class="stat-label">Años de historia</div>
+        </div>
+        <div>
+          <div class="stat-num">120</div>
+          <div class="stat-label">Platos únicos</div>
+        </div>
+        <div>
+          <div class="stat-num">4.9★</div>
+          <div class="stat-label">Valoración</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-image-wrap">
+        <div class="hero-img-placeholder">🍽</div>
+      </div>
+      <div class="hero-badge">
+        <p>"Cocina honesta, sin prisa."</p>
+        <span>Chef Martín Salas — Fundador</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- MENU -->
+  <section id="menu">
+    <div class="menu-header reveal">
+      <div>
+        <p class="section-label">Lo que ofrecemos</p>
+        <h2 class="section-title">Nuestra carta</h2>
+      </div>
+      <div class="menu-tabs">
+        <button class="tab active" onclick="setTab(this)">Desayunos</button>
+        <button class="tab" onclick="setTab(this)">Almuerzos</button>
+        <button class="tab" onclick="setTab(this)">Bebidas</button>
+      </div>
+    </div>
+    <div class="menu-grid reveal">
+      <div class="menu-item">
+        <div class="item-top">
+          <span class="item-name">Tostadas de masa madre</span>
+          <span class="item-price">$2.800</span>
+        </div>
+        <p class="item-desc">Con palta, semillas tostadas y un toque de aceite de oliva virgen extra.</p>
+      </div>
+      <div class="menu-item">
+        <div class="item-top">
+          <span class="item-name">Bowl granola artesanal</span>
+          <span class="item-price">$2.500</span>
+        </div>
+        <p class="item-desc">Granola de avena y miel, yogur natural, frutas de estación y miel de flores.</p>
+      </div>
+      <div class="menu-item">
+        <div class="item-top">
+          <span class="item-name">Huevos benedictinos</span>
+          <span class="item-price">$3.200</span>
+        </div>
+        <p class="item-desc">Sobre brioche tostado, jamón cocido artesanal y salsa holandesa.</p>
+      </div>
+      <div class="menu-item">
+        <div class="item-top">
+          <span class="item-name">Medialunas de manteca</span>
+          <span class="item-price">$1.200</span>
+        </div>
+        <p class="item-desc">Elaboradas diariamente en nuestra cocina. Ideales solas o con dulce de leche.</p>
+      </div>
+      <div class="menu-item">
+        <div class="item-top">
+          <span class="item-name">Porridge de avena</span>
+          <span class="item-price">$2.200</span>
+        </div>
+        <p class="item-desc">Cocida en leche, con banana caramelizada, canela y nueces.</p>
+      </div>
+      <div class="menu-item">
+        <div class="item-top">
+          <span class="item-name">Wrap de verduras asadas</span>
+          <span class="item-price">$2.900</span>
+        </div>
+        <p class="item-desc">Zucchini, morrón, berenjena, queso de cabra y salsa de yogur con hierbas.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- NOSOTROS -->
+  <section id="nosotros">
+    <div class="about-image reveal">
+      <div class="about-tag-box">Desde 2016</div>
+    </div>
+    <div class="about-text reveal">
+      <p class="section-label">Nuestra historia</p>
+      <h2 class="section-title">Un lugar donde el sabor tiene nombre propio</h2>
+      <p>Luma nació de la idea simple de que comer bien no debería ser un lujo. Apostamos por ingredientes locales, recetas de estación y un ambiente donde sentirse en casa.</p>
+      <p>Cada rincón fue pensado para que el tiempo transcurra diferente aquí. Sin apuros, con café de especialidad y el aroma del pan recién horneado.</p>
+      <ul class="about-list">
+        <li>Ingredientes locales y de estación</li>
+        <li>Pan y repostería elaborados cada mañana</li>
+        <li>Café de especialidad de origen único</li>
+        <li>Menú vegetariano y opciones celíacas</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- HORARIOS -->
+  <section id="horarios">
+    <p class="section-label">Estamos esperándote</p>
+    <h2 class="section-title">Horarios de atención</h2>
+    <div class="horarios-grid">
+      <div class="horario-card reveal">
+        <p class="horario-dia">Lunes a Viernes</p>
+        <p class="horario-hora">7:30 – 21:00</p>
+        <p class="horario-nota">Cocina hasta las 20:30</p>
+      </div>
+      <div class="horario-card reveal">
+        <p class="horario-dia">Sábados</p>
+        <p class="horario-hora">8:00 – 22:00</p>
+        <p class="horario-nota">Brunch especial 10:00–15:00</p>
+      </div>
+      <div class="horario-card reveal">
+        <p class="horario-dia">Domingos</p>
+        <p class="horario-hora">9:00 – 18:00</p>
+        <p class="horario-nota">Menú reducido</p>
+      </div>
+      <div class="horario-card reveal">
+        <p class="horario-dia">Feriados</p>
+        <p class="horario-hora">10:00 – 17:00</p>
+        <p class="horario-nota">Consultar disponibilidad</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACTO -->
+  <section id="contacto">
+    <p class="section-label reveal">Escribinos</p>
+    <h2 class="section-title reveal">Reservas &amp; consultas</h2>
+    <div class="contact-grid">
+      <div class="contact-info reveal">
+        <p>Reservá tu mesa o escribinos para consultas sobre eventos privados, menús especiales y catering.</p>
+        <div class="contact-detail">
+          <div class="contact-row">
+            <span class="contact-row-label">Dirección</span>
+            <span class="contact-row-val">Av. Corrientes 1452, CABA<br/>Buenos Aires, Argentina</span>
+          </div>
+          <div class="contact-row">
+            <span class="contact-row-label">Teléfono</span>
+            <span class="contact-row-val">+54 11 4321-5678</span>
+          </div>
+          <div class="contact-row">
+            <span class="contact-row-label">Email</span>
+            <span class="contact-row-val">hola@lumacafe.com.ar</span>
+          </div>
+          <div class="contact-row">
+            <span class="contact-row-label">Instagram</span>
+            <span class="contact-row-val">@lumacafe</span>
+          </div>
+        </div>
+      </div>
+      <div class="contact-form reveal">
+        <div class="form-row">
+          <div class="form-field">
+            <label>Nombre</label>
+            <input type="text" placeholder="Tu nombre" />
+          </div>
+          <div class="form-field">
+            <label>Email</label>
+            <input type="email" placeholder="tu@email.com" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-field">
+            <label>Fecha</label>
+            <input type="date" />
+          </div>
+          <div class="form-field">
+            <label>Personas</label>
+            <select>
+              <option>1 persona</option>
+              <option>2 personas</option>
+              <option>3-4 personas</option>
+              <option>5+ personas</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-field">
+          <label>Mensaje (opcional)</label>
+          <textarea placeholder="¿Alguna preferencia o consulta especial?"></textarea>
+        </div>
+        <button class="form-submit" onclick="handleSubmit()">Enviar reserva →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">Lu<span>ma</span></div>
+    <p>© 2025 Luma Café. Todos los derechos reservados.</p>
+    <div class="footer-links">
+      <a href="#">Instagram</a>
+      <a href="#">Facebook</a>
+      <a href="#">WhatsApp</a>
+    </div>
+  </footer>
+
+  <script>
+    // Reveal on scroll
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((e, i) => {
+        if (e.isIntersecting) {
+          setTimeout(() => e.target.classList.add('visible'), i * 80);
+        }
+      });
+    }, { threshold: 0.1 });
+    reveals.forEach(el => observer.observe(el));
+
+    // Menu tabs
+    function setTab(btn) {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      btn.classList.add('active');
+    }
+
+    // Form submit
+    function handleSubmit() {
+      alert('¡Gracias! Tu reserva fue recibida. Te contactaremos a la brevedad.');
+    }
+  </script>
+</body>
+</html>
